@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto employeeLogin(EmployeeDto dto) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        List<Employee> userNames = employeeRepo.findByUserName(dto.getUserName());
+        List<Employee> userNames = employeeRepo.findByUserNameAndRole(dto.getUserName(), dto.getRole());
         for (Employee name : userNames) {
             boolean isPasswordMatches = passwordEncoder.matches(dto.getPassword(), name.getPassword());
             if (isPasswordMatches) {

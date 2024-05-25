@@ -8,7 +8,7 @@ import java.util.List;
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     Employee findByUserNameAndNic(String nic, String userName);
 
-    List<Employee> findByUserName(String userName);
+    List<Employee> findByUserNameAndRole(String userName, String role);
 
     Employee findAllByEmployeeId(Long employeeId);
 }
