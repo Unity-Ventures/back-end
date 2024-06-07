@@ -13,5 +13,5 @@ public interface CustomerService {
 
     CustomerDto deleteCustomer(Long customerId);
 
-    CustomerDto searchCustomer(Long customerId);
+    CustomerDto searchAll(String value);
 }

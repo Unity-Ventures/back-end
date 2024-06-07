@@ -65,8 +65,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto searchCustomer(Long customerId) {
-        Optional<Customer> byId = this.customerRepo.findById(customerId);
+    public CustomerDto searchAll(String value) {
+        Optional<Customer> byId = this.customerRepo.findByNicOrFirstNameOrLastNameOrContactOrCustomerId(value, value, value, value, Long.valueOf(value));
         return byId.map(this::entityToDto).orElse(null);
     }
 
