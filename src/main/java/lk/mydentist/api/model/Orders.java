@@ -1,9 +1,6 @@
 package lk.mydentist.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,4 +20,12 @@ public class Orders {
     private int status;
     private LocalDate date;
     private double amount;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "receiver_id")
+    private Receiver receiver;
 }

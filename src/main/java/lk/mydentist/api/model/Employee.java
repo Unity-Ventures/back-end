@@ -1,13 +1,12 @@
 package lk.mydentist.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +26,20 @@ public class Employee {
     private String role;
     private String userName;
     private String password;
+
+    public Employee(Long employeeId, String fistName, String lastName, String address, String contact, String nic, String country, String role, String userName, String password) {
+        this.employeeId = employeeId;
+        this.fistName = fistName;
+        this.lastName = lastName;
+        this.address = address;
+        this.contact = contact;
+        this.nic = nic;
+        this.country = country;
+        this.role = role;
+        this.userName = userName;
+        this.password = password;
+    }
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Customer> customers;
 }

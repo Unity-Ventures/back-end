@@ -16,4 +16,5 @@ public class OrderDto {
     private int status;
     private LocalDate date;
     private double amount;
+    private Long customerId;
 }
