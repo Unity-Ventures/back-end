@@ -66,10 +66,10 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<Object> searchCustomer(@PathVariable Long customerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+    @GetMapping("/search/{value}")
+    public ResponseEntity<Object> searchCustomer(@PathVariable String value, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            CustomerDto dto = this.customerService.searchCustomer(customerId);
+            CustomerDto dto = this.customerService.searchAll(value);
             if (dto == null) {
                 return new ResponseEntity<>("Empty Data", HttpStatus.BAD_REQUEST);
             } else {

@@ -18,4 +18,5 @@ public class CustomerDto {
     private String nic;
     private double amount;
     private String country;
+    private long employeeId;
 }
