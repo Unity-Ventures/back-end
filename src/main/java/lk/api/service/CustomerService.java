@@ -1,17 +1,18 @@
 package lk.api.service;
 
 import lk.api.dto.CustomerDto;
+import lk.api.dto.getdto.CustomerGetDto;
 
 import java.util.List;
 
 public interface CustomerService {
     CustomerDto saveCustomer(CustomerDto customerDto);
 
-    List<CustomerDto> getAllCustomer();
+    List<CustomerGetDto> getAllCustomer();
 
-    CustomerDto updateCustomer(Long customerId, CustomerDto customerDto);
+    CustomerGetDto updateCustomer(Long customerId, CustomerDto customerDto);
 
-    CustomerDto deleteCustomer(Long customerId);
+    CustomerGetDto deleteCustomer(Long customerId);
 
-    CustomerDto searchAll(String value);
+    CustomerGetDto searchAll(String value);
 }

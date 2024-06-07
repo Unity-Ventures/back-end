@@ -1,6 +1,9 @@
 package lk.api.service.impl;
 
+import lk.api.dto.AccountDto;
 import lk.api.dto.CustomerDto;
+import lk.api.dto.getdto.CustomerGetDto;
+import lk.api.model.Account;
 import lk.api.model.Customer;
 import lk.api.repository.CustomerRepo;
 import lk.api.service.CustomerService;
@@ -30,44 +33,44 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDto> getAllCustomer() {
+    public List<CustomerGetDto> getAllCustomer() {
         List<Customer> allCustomer = this.customerRepo.findAllCustomer();
-        List<CustomerDto> list = new ArrayList<>();
+        List<CustomerGetDto> list = new ArrayList<>();
         for (Customer customer : allCustomer){
-            CustomerDto dto = entityToDto(customer);
+            CustomerGetDto dto = entityToGetDto(customer);
             list.add(dto);
         }
         return list;
     }
 
     @Override
-    public CustomerDto updateCustomer(Long customerId, CustomerDto customerDto) {
+    public CustomerGetDto updateCustomer(Long customerId, CustomerDto customerDto) {
         Optional<Customer> byId = customerRepo.findById(customerId);
         if (byId.isPresent()){
             customerDto.setCustomerId(byId.get().getCustomerId());
             Customer customer = this.dtoToEntity(customerDto);
             Customer save = customerRepo.save(customer);
-            return entityToDto(save);
+            return entityToGetDto(save);
         }else {
             return null;
         }
     }
 
     @Override
-    public CustomerDto deleteCustomer(Long customerId) {
+    public CustomerGetDto deleteCustomer(Long customerId) {
         Optional<Customer> byId = customerRepo.findById(customerId);
             if (byId.isPresent()){
                 customerRepo.deleteById(customerId);
-                return entityToDto(byId.get());
+                return entityToGetDto(byId.get());
             }else {
                 return null;
             }
     }
 
     @Override
-    public CustomerDto searchAll(String value) {
+    public CustomerGetDto searchAll(String value) {
         Optional<Customer> byId = this.customerRepo.findByNicOrFirstNameOrLastNameOrContactOrCustomerId(value, value, value, value, Long.valueOf(value));
-        return byId.map(this::entityToDto).orElse(null);
+        return byId.map(this::entityToGetDto).orElse(null);
     }
 
     private Customer dtoToEntity(CustomerDto dto){
@@ -76,7 +79,21 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
-    private CustomerDto entityToDto(Customer customer){
+    private CustomerGetDto entityToGetDto(Customer customer){
+        CustomerGetDto map = modelMapper.map(customer, CustomerGetDto.class);
+        map.setAccounts(entityToAccount(customer.getAccounts()));
+        return map;
+    }
+
+    private List<AccountDto> entityToAccount(List<Account> accounts) {
+        List<AccountDto> allAccount = new ArrayList<>();
+        for (Account account: accounts){
+            allAccount.add(modelMapper.map(account, AccountDto.class));
+        }
+        return allAccount;
+    }
+
+    private CustomerDto entityToDto(Customer customer) {
         return (customer == null) ? null : modelMapper.map(customer, CustomerDto.class);
     }
 }

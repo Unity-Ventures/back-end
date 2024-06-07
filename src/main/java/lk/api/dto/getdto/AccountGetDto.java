@@ -1,5 +1,6 @@
-package lk.api.dto.getDto;
+package lk.api.dto.getdto;
 
+import lk.api.dto.CustomerDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
