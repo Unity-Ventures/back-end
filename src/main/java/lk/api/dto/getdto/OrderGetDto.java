@@ -1,5 +1,6 @@
-package lk.api.dto;
+package lk.api.dto.getdto;
 
+import lk.api.dto.CustomerDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @ToString
-public class OrderDto {
+public class OrderGetDto {
     private Long orderId;
     private String status;
     private LocalDate date;
     private double amount;
-    private Long customerId;
-    private Long accountId;
+    private CustomerDto customer;
+    private AccountGetDto account;
 }
