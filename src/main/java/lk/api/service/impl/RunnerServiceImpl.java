@@ -41,6 +41,12 @@ public class RunnerServiceImpl implements RunnerService {
     }
 
     @Override
+    public RunnerDto searchRunner(Long id) {
+        Optional<Runner> byId = this.runnerRepo.findById(id);
+        return byId.map(this::entityToDto).orElse(null);
+    }
+
+    @Override
     public RunnerDto updateRunner(Long runnerId, RunnerDto updateRunnerDto) {
         Optional<Runner> byId = runnerRepo.findById(runnerId);
 
