@@ -1,7 +1,7 @@
 package lk.mydentist.api.controller;
 
-import lk.mydentist.api.dto.ReceiverDto;
-import lk.mydentist.api.service.ReceiverService;
+import lk.mydentist.api.dto.AccountDto;
+import lk.mydentist.api.service.AccountService;
 import lk.mydentist.api.util.JWTTokenGenerator;
 import lk.mydentist.api.util.TokenStatus;
 import org.springframework.http.HttpStatus;
@@ -12,20 +12,20 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/receiver")
-public class ReceiverController {
-    private final ReceiverService receiverService;
+@RequestMapping("/account")
+public class AccountController {
+    private final AccountService accountService;
     private final JWTTokenGenerator jwtTokenGenerator;
 
-    public ReceiverController(ReceiverService receiverService, JWTTokenGenerator jwtTokenGenerator) {
-        this.receiverService = receiverService;
+    public AccountController(AccountService accountService, JWTTokenGenerator jwtTokenGenerator) {
+        this.accountService = accountService;
         this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveReceiver(@RequestBody ReceiverDto receiverDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
+    public ResponseEntity<Object> saveAccount(@RequestBody AccountDto accountDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            ReceiverDto dto = this.receiverService.saveReceiver(receiverDto);
+            AccountDto dto = this.accountService.saveAccount(accountDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
@@ -33,29 +33,29 @@ public class ReceiverController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllReceiver(@RequestHeader(name = "Authorization") String authorizationHeader) {
+    public ResponseEntity<Object> getAllAccount(@RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            List<ReceiverDto> allReceivers = this.receiverService.getAllReceivers();
+            List<AccountDto> allReceivers = this.accountService.getAllAccount();
             return new ResponseEntity<>(allReceivers, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @PutMapping("/{receiverId}")
-    public ResponseEntity<Object> updateReceiver(@PathVariable Long receiverId, @RequestBody ReceiverDto updateDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
+    @PutMapping("/{accountId}")
+    public ResponseEntity<Object> updateAccount(@PathVariable Long accountId, @RequestBody AccountDto updateDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            ReceiverDto dto = this.receiverService.updateStudent(receiverId, updateDto);
+            AccountDto dto = this.accountService.updateAccount(accountId, updateDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @DeleteMapping("/{receiverId}")
-    public ResponseEntity<Object> deleteReceiver(@PathVariable Long receiverId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<Object> deleteAccount(@PathVariable Long accountId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            ReceiverDto dto = this.receiverService.deleteReceiver(receiverId);
+            AccountDto dto = this.accountService.deleteAccount(accountId);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);

@@ -9,15 +9,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-public class ReceiverDto {
-
-    private Long receiverId;
+public class AccountDto {
+    private Long accountId;
     private String name;
-    private String address;
-    private String contact;
-    private String nic;
     private String accountNo;
     private String bank;
     private String branch;
     private String country;
+    private Long customerId;
 }

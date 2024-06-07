@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -26,6 +27,6 @@ public class Orders {
     private Customer customer;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "receiver_id")
-    private Receiver receiver;
+    @JoinColumn(name = "account_id")
+    private Account account;
 }
