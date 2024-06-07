@@ -1,7 +1,7 @@
 package lk.api.controller;
 
 import lk.api.dto.AccountDto;
-import lk.api.dto.getDto.AccountGetDto;
+import lk.api.dto.getdto.AccountGetDto;
 import lk.api.service.AccountService;
 import lk.api.util.JWTTokenGenerator;
 import lk.api.util.TokenStatus;

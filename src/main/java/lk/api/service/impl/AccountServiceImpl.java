@@ -1,6 +1,6 @@
 package lk.api.service.impl;
 
-import lk.api.dto.getDto.AccountGetDto;
+import lk.api.dto.getdto.AccountGetDto;
 import lk.api.dto.AccountDto;
 import lk.api.model.Account;
 import lk.api.repository.AccountRepo;

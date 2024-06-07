@@ -1,6 +1,6 @@
 package lk.api.service;
 
-import lk.api.dto.getDto.AccountGetDto;
+import lk.api.dto.getdto.AccountGetDto;
 import lk.api.dto.AccountDto;
 
 import java.util.List;
