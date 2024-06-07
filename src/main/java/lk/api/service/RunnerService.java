@@ -13,4 +13,6 @@ public interface RunnerService {
     RunnerDto updateRunner(Long runnerId, RunnerDto updateRunnerDto);
 
     RunnerDto deleteRunner(Long runnerId);
+
+    RunnerDto searchRunner(Long runnerId);
 }

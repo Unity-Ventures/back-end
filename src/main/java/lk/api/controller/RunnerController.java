@@ -43,6 +43,20 @@ public class RunnerController {
         }
     }
 
+    @GetMapping("/{runnerId}")
+    public ResponseEntity<Object> getAllRunners(@PathVariable Long runnerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            RunnerDto dto = this.runnerService.searchRunner(runnerId);
+            if (dto == null) {
+                return new ResponseEntity<>("Empty Data", HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @PutMapping("/{runnerId}")
     public ResponseEntity<Object> updateStudent(@PathVariable Long runnerId, @RequestBody RunnerDto updateRunnerDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
