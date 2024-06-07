@@ -18,7 +18,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-    private int status;
+    private String status;
     private LocalDate date;
     private double amount;
 

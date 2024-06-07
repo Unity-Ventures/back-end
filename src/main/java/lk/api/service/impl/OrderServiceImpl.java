@@ -1,6 +1,7 @@
 package lk.api.service.impl;
 
 import lk.api.dto.OrderDto;
+import lk.api.dto.getdto.OrderGetDto;
 import lk.api.model.Orders;
 import lk.api.repository.OrderRepo;
 import lk.api.service.OrderService;
@@ -24,45 +25,63 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto saveOrder(OrderDto orderDto) {
-        orderDto.setStatus(0);
+        orderDto.setStatus("pending");
         Orders orders = this.dtoToEntity(orderDto);
         Orders save = orderRepo.save(orders);
         return entityToDto(save);
     }
 
     @Override
-    public List<OrderDto> getAllOrders() {
+    public List<OrderGetDto> getAllOrders() {
         List<Orders> allOrders = orderRepo.findAllOrders();
-        List<OrderDto> list = new ArrayList<>();
+        List<OrderGetDto> list = new ArrayList<>();
         for (Orders orders : allOrders){
-            OrderDto orderDto = entityToDto(orders);
+            OrderGetDto orderDto = entityToGetDto(orders);
             list.add(orderDto);
         }
         return list;
     }
 
     @Override
-    public OrderDto updateOrder(Long orderId, OrderDto updateDto) {
+    public OrderGetDto updateOrder(Long orderId, OrderDto updateDto) {
         Optional<Orders> byId = orderRepo.findById(orderId);
         if (byId.isPresent()){
             updateDto.setOrderId(orderId);
             Orders orders = this.dtoToEntity(updateDto);
             Orders save = orderRepo.save(orders);
-            return entityToDto(save);
+            return entityToGetDto(save);
         }else {
             return null;
         }
     }
 
     @Override
-    public OrderDto deleteOrder(Long orderId) {
+    public OrderGetDto deleteOrder(Long orderId) {
         Optional<Orders> byId = orderRepo.findById(orderId);
         if (byId.isPresent()){
             orderRepo.deleteById(orderId);
-            return entityToDto(byId.get());
+            return entityToGetDto(byId.get());
         }else {
             return null;
         }
+    }
+
+    @Override
+    public OrderGetDto updateOrderStatus(Long orderId, OrderDto dto) {
+        Optional<Orders> byId = orderRepo.findById(orderId);
+        if (byId.isPresent()){
+            byId.get().setStatus(dto.getStatus());
+            Orders save = orderRepo.save(byId.get());
+            return entityToGetDto(save);
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public OrderGetDto searchOrder(Long orderId) {
+        Optional<Orders> byId = orderRepo.findById(orderId);
+        return byId.map(this::entityToGetDto).orElse(null);
     }
 
     private Orders dtoToEntity(OrderDto orderDto){
@@ -70,7 +89,12 @@ public class OrderServiceImpl implements OrderService {
         map.setOrderId(orderDto.getOrderId());
         return map;
     }
+
     private OrderDto entityToDto(Orders orders){
         return (orders == null) ? null : modelMapper.map(orders, OrderDto.class);
+    }
+
+    private OrderGetDto entityToGetDto(Orders orders){
+        return (orders == null) ? null : modelMapper.map(orders, OrderGetDto.class);
     }
 }

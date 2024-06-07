@@ -1,6 +1,7 @@
 package lk.api.controller;
 
 import lk.api.dto.OrderDto;
+import lk.api.dto.getdto.OrderGetDto;
 import lk.api.service.OrderService;
 import lk.api.util.JWTTokenGenerator;
 import lk.api.util.TokenStatus;
@@ -35,8 +36,18 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<Object> getAllOrders(@RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            List<OrderDto> allOrders = this.orderService.getAllOrders();
+            List<OrderGetDto> allOrders = this.orderService.getAllOrders();
             return new ResponseEntity<>(allOrders, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<Object> searchOrder(@PathVariable Long orderId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            OrderGetDto dto = this.orderService.searchOrder(orderId);
+            return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
@@ -45,7 +56,17 @@ public class OrderController {
     @PutMapping("/{orderId}")
     public ResponseEntity<Object> updateOrder(@PathVariable Long orderId, @RequestBody OrderDto updateDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            OrderDto dto = this.orderService.updateOrder(orderId, updateDto);
+            OrderGetDto dto = this.orderService.updateOrder(orderId, updateDto);
+            return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PutMapping("/updateState/{orderId}")
+    public ResponseEntity<Object> updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderDto status, @RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            OrderGetDto dto = this.orderService.updateOrderStatus(orderId, status);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
@@ -55,7 +76,7 @@ public class OrderController {
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Object> deleteOrder(@PathVariable Long orderId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            OrderDto dto = this.orderService.deleteOrder(orderId);
+            OrderGetDto dto = this.orderService.deleteOrder(orderId);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);

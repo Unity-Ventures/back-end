@@ -1,15 +1,20 @@
 package lk.api.service;
 
 import lk.api.dto.OrderDto;
+import lk.api.dto.getdto.OrderGetDto;
 
 import java.util.List;
 
 public interface OrderService {
     OrderDto saveOrder(OrderDto orderDto);
 
-    List<OrderDto> getAllOrders();
+    List<OrderGetDto> getAllOrders();
 
-    OrderDto updateOrder(Long orderId, OrderDto updateDto);
+    OrderGetDto updateOrder(Long orderId, OrderDto updateDto);
 
-    OrderDto deleteOrder(Long orderId);
+    OrderGetDto deleteOrder(Long orderId);
+
+    OrderGetDto updateOrderStatus(Long orderId, OrderDto status);
+
+    OrderGetDto searchOrder(Long orderId);
 }
