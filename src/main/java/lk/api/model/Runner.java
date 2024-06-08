@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Table(name = "runners")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +25,7 @@ public class Runner {
     private String country;
     private String userName;
     private String password;
+
+    @OneToMany(mappedBy = "runner", cascade = CascadeType.ALL)
+    private List<PaymentDetails> paymentDetails;
 }
