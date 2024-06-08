@@ -43,4 +43,7 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Customer> customers;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<PaymentDetails> paymentDetails;
 }

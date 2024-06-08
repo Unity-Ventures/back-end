@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Table(name = "orders")
 @NoArgsConstructor
@@ -29,4 +30,7 @@ public class Orders {
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private List<PaymentDetails> paymentDetails;
 }
