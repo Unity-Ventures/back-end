@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @CrossOrigin
 @RestController
@@ -26,6 +27,9 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Object> saveOrder(@RequestBody OrderDto orderDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            Random random = new Random();
+            int fiveDigitNumber = 10000 + random.nextInt(90000);
+            orderDto.setReferenceNo(fiveDigitNumber);
             OrderDto dto = this.orderService.saveOrder(orderDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {

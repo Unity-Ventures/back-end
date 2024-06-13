@@ -14,9 +14,16 @@ import java.time.LocalDate;
 @ToString
 public class OrderGetDto {
     private Long orderId;
-    private String status;
     private LocalDate date;
-    private double amount;
+    private String sentCurrency;
+    private String receiveCurrency;
+    private double rate;
+    private double sentAmount;
+    private double receiveAmount;
+    private double serviceCharge;
+    private String description;
+    private int referenceNo;
+    private String status;
     private CustomerDto customer;
     private AccountGetDto account;
 }
