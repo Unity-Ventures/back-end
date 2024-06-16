@@ -13,8 +13,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 public class PaymentDetailsGetDto {
-    private EmployeeDto employeeId;
-    private RunnerDto runnerId;
-    private OrderDto orderId;
+    private Long paymentId;
+    private EmployeeDto employee;
+    private RunnerDto runner;
+    private OrderDto order;
     private double runnerAmount;
 }

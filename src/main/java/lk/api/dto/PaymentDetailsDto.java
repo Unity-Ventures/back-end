@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 public class PaymentDetailsDto {
+    private Long paymentId;
     private Long employeeId;
     private Long runnerId;
     private Long orderId;
