@@ -31,7 +31,7 @@ public class RunnerServiceImpl implements RunnerService {
 
     @Override
     public List<RunnerDto> getAllRunners() {
-        List<Runner> allRunners = this.runnerRepo.findAllRunners();
+        List<Runner> allRunners = this.runnerRepo.findAll();
         List<RunnerDto> list = new ArrayList<>();
         for (Runner runner : allRunners){
             RunnerDto dto = entityToDto(runner);
