@@ -40,7 +40,6 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
             list.add(dto);
         }
         return list;
-
     }
 
     @Override
@@ -70,11 +69,18 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     @Override
     public PaymentDetailsGetDto searchPaymentDetails(Long paymentId) {
         Optional<PaymentDetails> byId = this.paymentDetailsRepo.findById(paymentId);
-        if (byId.isPresent()){
-            return entityToGetDto(byId.get());
-        }else {
-            return null;
+        return byId.map(this::entityToGetDto).orElse(null);
+    }
+
+    @Override
+    public List<PaymentDetailsGetDto> getPaymentDetailsEmployeeWise(Long employeeId) {
+        List<PaymentDetails> allPaymentDetails = this.paymentDetailsRepo.findAllByEmployeeEmployeeId(employeeId);
+        List<PaymentDetailsGetDto> list = new ArrayList<>();
+        for (PaymentDetails paymentDetails : allPaymentDetails){
+            PaymentDetailsGetDto dto = entityToGetDto(paymentDetails);
+            list.add(dto);
         }
+        return list;
     }
 
     private PaymentDetails dtoToEntity(PaymentDetailsDto dto){

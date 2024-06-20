@@ -15,4 +15,6 @@ public interface PaymentDetailsService {
     PaymentDetailsGetDto deletePaymentDetails(Long paymentId);
 
     PaymentDetailsGetDto searchPaymentDetails(Long paymentId);
+
+    List<PaymentDetailsGetDto> getPaymentDetailsEmployeeWise(Long employeeId);
 }

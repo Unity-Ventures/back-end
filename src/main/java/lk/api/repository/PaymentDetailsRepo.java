@@ -9,4 +9,5 @@ public interface PaymentDetailsRepo extends JpaRepository<PaymentDetails,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM payment_details ORDER BY payment_id DESC")
     List<PaymentDetails> findAllPaymentDetails();
 
+    List<PaymentDetails> findAllByEmployeeEmployeeId(Long employeeId);
 }
