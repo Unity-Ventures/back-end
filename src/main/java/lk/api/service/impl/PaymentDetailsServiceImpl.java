@@ -26,6 +26,7 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     @Override
     public PaymentDetailsDto savePaymentDetails(PaymentDetailsDto paymentDetailsDto) {
         PaymentDetails paymentDetails = this.dtoToEntity(paymentDetailsDto);
+        paymentDetails.setRunner(null);
         PaymentDetails save = this.paymentDetailsRepo.save(paymentDetails);
         return entityToDto(save);
     }

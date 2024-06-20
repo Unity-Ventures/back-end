@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 @AllArgsConstructor
 @ToString
@@ -21,7 +22,8 @@ public class PaymentDetails {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
+    @Nullable
     @JoinColumn(name = "runner_id")
     private Runner runner;
 
