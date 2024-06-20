@@ -75,4 +75,14 @@ public class PaymentDetailsController {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping("/employee_wise/{employeeId}")
+    public ResponseEntity<Object> getPaymentDetailsEmployeeWise(@PathVariable Long employeeId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            List<PaymentDetailsGetDto> dtos = this.paymentDetailsService.getPaymentDetailsEmployeeWise(employeeId);
+            return new ResponseEntity<>(dtos, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
