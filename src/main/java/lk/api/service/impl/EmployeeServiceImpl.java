@@ -80,6 +80,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         return addData;
     }
 
+    @Override
+    public List<EmployeeDto> getAllPartner() {
+        List<Employee> all = employeeRepo.findByRole("partner");
+        List<EmployeeDto> addData = new ArrayList<>();
+        for (Employee employee : all) {
+            addData.add(entityToDto(employee));
+        }
+        return addData;
+    }
+
     private Employee dtoToEntity(EmployeeDto dto) {
         return modelMapperConfig.modelMapper().map(dto, Employee.class);
     }
