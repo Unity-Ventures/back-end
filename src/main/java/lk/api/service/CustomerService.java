@@ -15,4 +15,7 @@ public interface CustomerService {
     CustomerGetDto deleteCustomer(Long customerId);
 
     CustomerGetDto searchAll(String value);
+
+
+    List<CustomerGetDto> getCustomerAccounts(Long customerId);
 }

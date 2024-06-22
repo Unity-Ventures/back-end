@@ -84,4 +84,14 @@ public class EmployeeController {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping("/get_role_partner_user")
+    public ResponseEntity<Object> getPartnerRoleEmployee(@RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            List<EmployeeDto> allPartnerUsers = this.employeeService.getPartnerRoleEmployee(authorizationHeader);
+            return new ResponseEntity<>(allPartnerUsers, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

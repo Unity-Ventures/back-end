@@ -80,4 +80,14 @@ public class CustomerController {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Object> getCustomerAccounts(@PathVariable Long customerId,@RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            List<CustomerGetDto> dtos = this.customerService.getCustomerAccounts(customerId);
+            return new ResponseEntity<>(dtos, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

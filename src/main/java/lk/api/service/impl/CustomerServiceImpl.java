@@ -5,6 +5,7 @@ import lk.api.dto.CustomerDto;
 import lk.api.dto.getdto.CustomerGetDto;
 import lk.api.model.Account;
 import lk.api.model.Customer;
+import lk.api.repository.AccountRepo;
 import lk.api.repository.CustomerRepo;
 import lk.api.service.CustomerService;
 import org.modelmapper.ModelMapper;
@@ -13,15 +14,18 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepo customerRepo;
+    private final AccountRepo accountRepo;
     private final ModelMapper modelMapper;
 
-    public CustomerServiceImpl(CustomerRepo customerRepo, ModelMapper modelMapper) {
+    public CustomerServiceImpl(CustomerRepo customerRepo, AccountRepo accountRepo, ModelMapper modelMapper) {
         this.customerRepo = customerRepo;
+        this.accountRepo = accountRepo;
         this.modelMapper = modelMapper;
     }
 
@@ -72,6 +76,18 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> byId = this.customerRepo.findByNicOrFirstNameOrLastNameOrContactOrCustomerId(value, value, value, value, Long.valueOf(value));
         return byId.map(this::entityToGetDto).orElse(null);
     }
+
+    @Override
+    public List<CustomerGetDto> getCustomerAccounts(Long customerId) {
+//        List<Account> customerAccounts = this.accountRepo.findCustomerAccounts(customerId);
+//        if (customerAccounts != null) {
+//            return customerAccounts.stream()
+//                    .map(this::entityToDto)
+//                    .collect(Collectors.toList());
+//        }
+        return null;
+    }
+
 
     private Customer dtoToEntity(CustomerDto dto){
         Customer customer = modelMapper.map(dto, Customer.class);

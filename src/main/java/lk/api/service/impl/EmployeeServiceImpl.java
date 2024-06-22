@@ -1,6 +1,7 @@
 package lk.api.service.impl;
 
 import lk.api.service.EmployeeService;
+import lk.api.util.JWTTokenGenerator;
 import lk.api.util.ModelMapperConfig;
 import lk.api.dto.EmployeeDto;
 import lk.api.model.Employee;
@@ -17,10 +18,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepo employeeRepo;
     private final ModelMapperConfig modelMapperConfig;
+    private final JWTTokenGenerator jwtTokenGenerator;
 
-    public EmployeeServiceImpl(EmployeeRepo employeeRepo, ModelMapperConfig modelMapperConfig) {
+
+    public EmployeeServiceImpl(EmployeeRepo employeeRepo, ModelMapperConfig modelMapperConfig, JWTTokenGenerator jwtTokenGenerator) {
         this.employeeRepo = employeeRepo;
         this.modelMapperConfig = modelMapperConfig;
+        this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
     @Override
@@ -78,6 +82,26 @@ public class EmployeeServiceImpl implements EmployeeService {
             addData.add(entityToDto(employee));
         }
         return addData;
+    }
+
+    @Override
+    public List<EmployeeDto> getPartnerRoleEmployee(String token) {
+
+        //get user's role
+        String role = jwtTokenGenerator.getEmployeeFromToken(token).getRole();
+
+        List<Employee> byRole;
+        if (role.equals("Partner")){
+            byRole = employeeRepo.findByRoleWiseEmployee();
+        }else {
+            return null;
+        }
+        List<EmployeeDto> list = new ArrayList<>();
+        for (Employee employee : byRole){
+            EmployeeDto employeeDto = entityToDto(employee);
+            list.add(employeeDto);
+        }
+        return list;
     }
 
     private Employee dtoToEntity(EmployeeDto dto) {

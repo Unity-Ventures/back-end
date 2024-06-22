@@ -1,10 +1,7 @@
 package lk.api.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @AllArgsConstructor
 @ToString
@@ -23,6 +20,7 @@ public class PaymentDetails {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "runner_id")
+    @NonNull
     private Runner runner;
 
     @ManyToOne(optional = false)
