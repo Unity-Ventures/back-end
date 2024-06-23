@@ -1,5 +1,8 @@
 package lk.api.service.impl;
 
+import lk.api.dto.RunnerDto;
+import lk.api.model.Runner;
+import lk.api.repository.RunnerRepo;
 import lk.api.service.EmployeeService;
 import lk.api.util.ModelMapperConfig;
 import lk.api.dto.EmployeeDto;
@@ -16,10 +19,13 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepo employeeRepo;
+    private final RunnerRepo runnerRepo;
+
     private final ModelMapperConfig modelMapperConfig;
 
-    public EmployeeServiceImpl(EmployeeRepo employeeRepo, ModelMapperConfig modelMapperConfig) {
+    public EmployeeServiceImpl(EmployeeRepo employeeRepo, RunnerRepo runnerRepo, ModelMapperConfig modelMapperConfig) {
         this.employeeRepo = employeeRepo;
+        this.runnerRepo = runnerRepo;
         this.modelMapperConfig = modelMapperConfig;
     }
 
@@ -32,11 +38,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto employeeLogin(EmployeeDto dto) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        List<Employee> userNames = employeeRepo.findByUserNameAndRole(dto.getUserName(), dto.getRole());
-        for (Employee name : userNames) {
-            boolean isPasswordMatches = passwordEncoder.matches(dto.getPassword(), name.getPassword());
-            if (isPasswordMatches) {
-                return entityToDto(name);
+        if (dto.getRole().equals("Runner")){
+            List<Runner> byUserNameAndRole = runnerRepo.findByUserNameAndRole(dto.getUserName(), dto.getRole());
+            for (Runner name : byUserNameAndRole){
+                boolean isPasswordMatches = passwordEncoder.matches(dto.getPassword(), name.getPassword());
+                if (isPasswordMatches){
+                    return entityToRunnerDto(name);
+                }
+            }
+        }else {
+            List<Employee> userNames = employeeRepo.findByUserNameAndRole(dto.getUserName(), dto.getRole());
+            for (Employee name : userNames) {
+                boolean isPasswordMatches = passwordEncoder.matches(dto.getPassword(), name.getPassword());
+                if (isPasswordMatches) {
+                    return entityToDto(name);
+                }
             }
         }
         return null;
@@ -96,5 +112,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeDto entityToDto(Employee employee) {
         return employee == null ? null : modelMapperConfig.modelMapper().map(employee, EmployeeDto.class);
+    }
+    private RunnerDto entityToRunnerDto(Runner runner) {
+        return runner == null ? null : modelMapperConfig.modelMapper().map(runner, RunnerDto.class);
     }
 }

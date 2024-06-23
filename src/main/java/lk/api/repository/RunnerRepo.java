@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface RunnerRepo extends JpaRepository<Runner,Long> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Runner ORDER BY runner_id DESC")
+    @Query(nativeQuery = true, value = "SELECT * FROM Runners ORDER BY runner_id DESC")
     List<Runner> findAllRunners();
+
+    List<Runner> findByUserNameAndRole(String userName, String role);
+
 }
