@@ -18,4 +18,5 @@ public class PaymentDetailsGetDto {
     private RunnerDto runner;
     private OrderDto order;
     private double runnerAmount;
+    private String image;
 }
