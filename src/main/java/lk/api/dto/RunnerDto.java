@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-public class RunnerDto {
+public class RunnerDto extends EmployeeDto {
     private Long runnerId;
     private String name;
     private String address;
