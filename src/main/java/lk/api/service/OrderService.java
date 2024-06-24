@@ -17,4 +17,6 @@ public interface OrderService {
     OrderGetDto updateOrderStatus(Long orderId, OrderDto status);
 
     OrderGetDto searchOrder(Long orderId);
+
+    List<OrderGetDto> getAllOrdersCustomerWise(Long customerId);
 }

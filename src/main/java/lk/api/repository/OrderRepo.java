@@ -9,4 +9,6 @@ import java.util.List;
 public interface OrderRepo extends JpaRepository<Orders,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM orders ORDER BY order_id DESC")
     List<Orders> findAllOrders();
+
+    List<Orders> findAllByCustomerCustomerId(Long customerId);
 }

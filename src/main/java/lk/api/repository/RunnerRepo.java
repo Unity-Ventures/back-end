@@ -11,6 +11,6 @@ public interface RunnerRepo extends JpaRepository<Runner,Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM Runners ORDER BY runner_id DESC")
     List<Runner> findAllRunners();
 
-    List<Runner> findByUserNameAndRole(String userName, String role);
+    List<Runner> findByUserName(String userName);
 
 }

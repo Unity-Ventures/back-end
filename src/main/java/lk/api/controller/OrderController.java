@@ -58,6 +58,22 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/get_order_customer_wise/{customerId}")
+    public ResponseEntity<Object> getAllOrdersCustomerWise(@PathVariable Long customerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            List<OrderGetDto> allOrders = this.orderService.getAllOrdersCustomerWise(customerId);
+            List<OrderGetDto> newList = new ArrayList<>();
+            for (OrderGetDto dto : allOrders) {
+                List<PaymentDetailsGetDto> paymentDetailsGetDtos = paymentDetailsService.searchPaymentDetailsOrderWise(dto.getOrderId());
+                dto.setPaymentDetailsGetDto(paymentDetailsGetDtos);
+                newList.add(dto);
+            }
+            return new ResponseEntity<>(newList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<Object> searchOrder(@PathVariable Long orderId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
