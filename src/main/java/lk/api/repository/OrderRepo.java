@@ -11,4 +11,7 @@ public interface OrderRepo extends JpaRepository<Orders,Long> {
     List<Orders> findAllOrders();
 
     List<Orders> findAllByCustomerCustomerId(Long customerId);
+
+    @Query(nativeQuery = true, value = "select orders.* from orders join accounts on orders.account_id=accounts.account_id where accounts.customer_id=?")
+    List<Orders> findAllByReceiverWise(Long customerId);
 }

@@ -95,6 +95,17 @@ public class OrderServiceImpl implements OrderService {
         return list;
     }
 
+    @Override
+    public List<OrderGetDto> getAllOrdersReceiverWise(Long customerId) {
+        List<Orders> allOrders = orderRepo.findAllByReceiverWise(customerId);
+        List<OrderGetDto> list = new ArrayList<>();
+        for (Orders orders : allOrders){
+            OrderGetDto orderDto = entityToGetDto(orders);
+            list.add(orderDto);
+        }
+        return list;
+    }
+
     private Orders dtoToEntity(OrderDto orderDto){
         Orders map = modelMapper.map(orderDto, Orders.class);
         map.setOrderId(orderDto.getOrderId());
