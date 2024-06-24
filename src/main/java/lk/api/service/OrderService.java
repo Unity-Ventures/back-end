@@ -19,4 +19,6 @@ public interface OrderService {
     OrderGetDto searchOrder(Long orderId);
 
     List<OrderGetDto> getAllOrdersCustomerWise(Long customerId);
+
+    List<OrderGetDto> getAllOrdersReceiverWise(Long customerId);
 }
