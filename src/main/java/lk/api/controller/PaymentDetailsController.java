@@ -8,6 +8,10 @@ import lk.api.util.TokenStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @CrossOrigin
@@ -46,6 +50,16 @@ public class PaymentDetailsController {
     public ResponseEntity<Object> updatePaymentDetails(@PathVariable Long paymentId, @RequestBody PaymentDetailsDto paymentDetailsDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
             PaymentDetailsGetDto dto = this.paymentDetailsService.updatePaymentDetails(paymentId, paymentDetailsDto);
+            return new ResponseEntity<>(dto, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PutMapping("image_save/{paymentId}")
+    public ResponseEntity<Object> updatePaymentDetails(@PathVariable Long paymentId, @ModelAttribute MultipartFile imageDto, @RequestHeader(name = "Authorization") String authorizationHeader) throws URISyntaxException, IOException {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            PaymentDetailsGetDto dto = this.paymentDetailsService.saveBillImage(paymentId, imageDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);

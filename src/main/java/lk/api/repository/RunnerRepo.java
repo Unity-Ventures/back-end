@@ -13,4 +13,5 @@ public interface RunnerRepo extends JpaRepository<Runner,Long> {
 
     List<Runner> findByUserName(String userName);
 
+    List<Runner> findAllByEmployeeEmployeeId(Long employeeId);
 }

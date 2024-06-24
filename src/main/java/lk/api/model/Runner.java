@@ -28,4 +28,8 @@ public class Runner {
 
     @OneToMany(mappedBy = "runner", cascade = CascadeType.ALL)
     private List<PaymentDetails> paymentDetails;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

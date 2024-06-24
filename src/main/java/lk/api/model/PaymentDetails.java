@@ -17,6 +17,8 @@ public class PaymentDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
     private double runnerAmount;
+    @Nullable
+    private String image;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "employee_id")
