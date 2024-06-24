@@ -84,6 +84,17 @@ public class OrderServiceImpl implements OrderService {
         return byId.map(this::entityToGetDto).orElse(null);
     }
 
+    @Override
+    public List<OrderGetDto> getAllOrdersCustomerWise(Long customerId) {
+        List<Orders> allOrders = orderRepo.findAllByCustomerCustomerId(customerId);
+        List<OrderGetDto> list = new ArrayList<>();
+        for (Orders orders : allOrders){
+            OrderGetDto orderDto = entityToGetDto(orders);
+            list.add(orderDto);
+        }
+        return list;
+    }
+
     private Orders dtoToEntity(OrderDto orderDto){
         Orders map = modelMapper.map(orderDto, Orders.class);
         map.setOrderId(orderDto.getOrderId());
