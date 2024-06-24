@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,4 +27,5 @@ public class OrderGetDto {
     private String status;
     private CustomerDto customer;
     private AccountGetDto account;
+    private List<PaymentDetailsGetDto> paymentDetailsGetDto;
 }

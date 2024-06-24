@@ -2,13 +2,16 @@ package lk.api.controller;
 
 import lk.api.dto.OrderDto;
 import lk.api.dto.getdto.OrderGetDto;
+import lk.api.dto.getdto.PaymentDetailsGetDto;
 import lk.api.service.OrderService;
+import lk.api.service.PaymentDetailsService;
 import lk.api.util.JWTTokenGenerator;
 import lk.api.util.TokenStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -17,10 +20,12 @@ import java.util.Random;
 @RequestMapping("/order")
 public class OrderController {
     private final OrderService orderService;
+    private final PaymentDetailsService paymentDetailsService;
     private final JWTTokenGenerator jwtTokenGenerator;
 
-    public OrderController(OrderService orderService, JWTTokenGenerator jwtTokenGenerator) {
+    public OrderController(OrderService orderService, PaymentDetailsService paymentDetailsService, JWTTokenGenerator jwtTokenGenerator) {
         this.orderService = orderService;
+        this.paymentDetailsService = paymentDetailsService;
         this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
@@ -41,7 +46,13 @@ public class OrderController {
     public ResponseEntity<Object> getAllOrders(@RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
             List<OrderGetDto> allOrders = this.orderService.getAllOrders();
-            return new ResponseEntity<>(allOrders, HttpStatus.OK);
+            List<OrderGetDto> newList = new ArrayList<>();
+            for (OrderGetDto dto : allOrders) {
+                List<PaymentDetailsGetDto> paymentDetailsGetDtos = paymentDetailsService.searchPaymentDetailsOrderWise(dto.getOrderId());
+                dto.setPaymentDetailsGetDto(paymentDetailsGetDtos);
+                newList.add(dto);
+            }
+            return new ResponseEntity<>(newList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
@@ -51,6 +62,8 @@ public class OrderController {
     public ResponseEntity<Object> searchOrder(@PathVariable Long orderId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
             OrderGetDto dto = this.orderService.searchOrder(orderId);
+            List<PaymentDetailsGetDto> paymentDetailsGetDtos = paymentDetailsService.searchPaymentDetailsOrderWise(dto.getOrderId());
+            dto.setPaymentDetailsGetDto(paymentDetailsGetDtos);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
