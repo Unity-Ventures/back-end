@@ -47,6 +47,17 @@ public class RunnerServiceImpl implements RunnerService {
     }
 
     @Override
+    public List<RunnerDto> getAllRunnersEmployeeWise(Long employeeId) {
+        List<Runner> allRunners = this.runnerRepo.findAllByEmployeeEmployeeId(employeeId);
+        List<RunnerDto> list = new ArrayList<>();
+        for (Runner runner : allRunners){
+            RunnerDto dto = entityToDto(runner);
+            list.add(dto);
+        }
+        return list;
+    }
+
+    @Override
     public RunnerDto updateRunner(Long runnerId, RunnerDto updateRunnerDto) {
         Optional<Runner> byId = runnerRepo.findById(runnerId);
 

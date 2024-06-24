@@ -1,7 +1,6 @@
 package lk.api.service;
 
 import lk.api.dto.RunnerDto;
-
 import java.util.List;
 
 public interface RunnerService {
@@ -15,4 +14,6 @@ public interface RunnerService {
     RunnerDto deleteRunner(Long runnerId);
 
     RunnerDto searchRunner(Long runnerId);
+
+    List<RunnerDto> getAllRunnersEmployeeWise(Long runnerId);
 }

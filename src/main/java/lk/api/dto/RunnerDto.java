@@ -18,6 +18,7 @@ public class RunnerDto extends EmployeeDto {
     private String nic;
     private String country;
     private String userName;
+    private Long employeeId;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }
