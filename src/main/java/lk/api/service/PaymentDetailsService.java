@@ -20,6 +20,7 @@ public interface PaymentDetailsService {
     PaymentDetailsGetDto searchPaymentDetails(Long paymentId);
 
     List<PaymentDetailsGetDto> getPaymentDetailsEmployeeWise(Long employeeId);
+    List<PaymentDetailsGetDto> getPaymentDetailsRunnerWise(Long runnerId);
 
     List<PaymentDetailsGetDto> searchPaymentDetailsOrderWise(Long orderId);
 
