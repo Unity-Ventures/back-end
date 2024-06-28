@@ -10,7 +10,7 @@ public interface PaymentDetailsRepo extends JpaRepository<PaymentDetails,Long> {
     List<PaymentDetails> findAllPaymentDetails();
 
     List<PaymentDetails> findAllByEmployeeEmployeeId(Long employeeId);
-
+    List<PaymentDetails> findAllByRunner_RunnerId(Long runnerId);
     @Query(nativeQuery = true, value = "SELECT * FROM payment_details where order_id=?")
     List<PaymentDetails> findAllByOrder(Long orderId);
 }

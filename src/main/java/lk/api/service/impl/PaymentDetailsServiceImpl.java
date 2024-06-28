@@ -88,6 +88,17 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     }
 
     @Override
+    public List<PaymentDetailsGetDto> getPaymentDetailsRunnerWise(Long runnerId) {
+        List<PaymentDetails> allPaymentDetails = this.paymentDetailsRepo.findAllByRunner_RunnerId(runnerId);
+        List<PaymentDetailsGetDto> list = new ArrayList<>();
+        for (PaymentDetails paymentDetails : allPaymentDetails) {
+            PaymentDetailsGetDto dto = entityToGetDto(paymentDetails);
+            list.add(dto);
+        }
+        return list;
+    }
+
+    @Override
     public List<PaymentDetailsGetDto> searchPaymentDetailsOrderWise(Long orderId) {
         List<PaymentDetails> allPaymentDetails = this.paymentDetailsRepo.findAllByOrder(orderId);
         List<PaymentDetailsGetDto> list = new ArrayList<>();
@@ -103,8 +114,8 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
         Optional<PaymentDetails> byId = paymentDetailsRepo.findById(paymentId);
         if (byId.isPresent()) {
             String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
-            File uploadDir = new File(projectPath + "/uploads");
-            uploadDir.mkdir();
+            File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
+            uploadDir.mkdirs();
             image.transferTo(new File(uploadDir.getAbsolutePath() + "/" + image.getOriginalFilename()));
 
             //set image path and name

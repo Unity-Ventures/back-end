@@ -99,4 +99,14 @@ public class PaymentDetailsController {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @GetMapping("/runner_wise/{runnerId}")
+    public ResponseEntity<Object> getPaymentDetailsRunnerWise(@PathVariable Long runnerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+        if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
+            List<PaymentDetailsGetDto> dtos = this.paymentDetailsService.getPaymentDetailsRunnerWise(runnerId);
+            return new ResponseEntity<>(dtos, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

@@ -2,11 +2,13 @@ package lk.api.controller;
 
 import lk.api.dto.EmployeeDto;
 import lk.api.dto.RunnerDto;
+import lk.api.model.Employee;
 import lk.api.service.RunnerService;
 import lk.api.util.JWTTokenGenerator;
 import lk.api.util.TokenStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +31,11 @@ public class RunnerController {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
             EmployeeDto employeeDto = jwtTokenGenerator.getEmployeeFromToken(authorizationHeader);
             runnerDto.setEmployeeId(employeeDto.getEmployeeId());
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String pword = runnerDto.getPassword();
+            runnerDto.setPassword(passwordEncoder.encode(pword));
+
             RunnerDto dto = this.runnerService.saveRunner(runnerDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
