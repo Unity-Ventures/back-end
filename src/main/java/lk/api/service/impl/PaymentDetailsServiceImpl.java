@@ -103,8 +103,8 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
         Optional<PaymentDetails> byId = paymentDetailsRepo.findById(paymentId);
         if (byId.isPresent()) {
             String projectPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().getParentFile().getAbsolutePath();
-            File uploadDir = new File(projectPath + "/uploads");
-            uploadDir.mkdir();
+            File uploadDir = new File(projectPath + "/src/main/resources/static/uploads");
+            uploadDir.mkdirs();
             image.transferTo(new File(uploadDir.getAbsolutePath() + "/" + image.getOriginalFilename()));
 
             //set image path and name
