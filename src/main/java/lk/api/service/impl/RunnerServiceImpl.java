@@ -1,10 +1,12 @@
 package lk.api.service.impl;
 
 import lk.api.dto.RunnerDto;
+import lk.api.dto.getdto.RunnerGetDto;
 import lk.api.model.Runner;
 import lk.api.repository.RunnerRepo;
 import lk.api.service.RunnerService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,58 +27,60 @@ public class RunnerServiceImpl implements RunnerService {
     @Override
     public RunnerDto saveRunner(RunnerDto runnerDto) {
         Runner runner = this.dtoToEntity(runnerDto);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        runner.setPassword(passwordEncoder.encode(runnerDto.getPassword()));
         Runner save = this.runnerRepo.save(runner);
         return entityToDto(save);
     }
 
     @Override
-    public List<RunnerDto> getAllRunners() {
+    public List<RunnerGetDto> getAllRunners() {
         List<Runner> allRunners = this.runnerRepo.findAll();
-        List<RunnerDto> list = new ArrayList<>();
+        List<RunnerGetDto> list = new ArrayList<>();
         for (Runner runner : allRunners){
-            RunnerDto dto = entityToDto(runner);
+             RunnerGetDto dto = entityToGetDto(runner);
             list.add(dto);
         }
         return list;
     }
 
     @Override
-    public RunnerDto searchRunner(Long id) {
+    public RunnerGetDto searchRunner(Long id) {
         Optional<Runner> byId = this.runnerRepo.findById(id);
-        return byId.map(this::entityToDto).orElse(null);
+        return byId.map(this::entityToGetDto).orElse(null);
     }
 
     @Override
-    public List<RunnerDto> getAllRunnersEmployeeWise(Long employeeId) {
+    public List<RunnerGetDto> getAllRunnersEmployeeWise(Long employeeId) {
         List<Runner> allRunners = this.runnerRepo.findAllByEmployeeEmployeeId(employeeId);
-        List<RunnerDto> list = new ArrayList<>();
+        List<RunnerGetDto> list = new ArrayList<>();
         for (Runner runner : allRunners){
-            RunnerDto dto = entityToDto(runner);
+            RunnerGetDto dto = entityToGetDto(runner);
             list.add(dto);
         }
         return list;
     }
 
     @Override
-    public RunnerDto updateRunner(Long runnerId, RunnerDto updateRunnerDto) {
+    public RunnerGetDto updateRunner(Long runnerId, RunnerDto updateRunnerDto) {
         Optional<Runner> byId = runnerRepo.findById(runnerId);
 
         if (byId.isPresent()){
             updateRunnerDto.setRunnerId(runnerId);
             Runner runner = this.dtoToEntity(updateRunnerDto);
             Runner save = runnerRepo.save(runner);
-            return entityToDto(save);
+            return entityToGetDto(save);
         }else {
             return null;
         }
     }
 
     @Override
-    public RunnerDto deleteRunner(Long runnerId) {
+    public RunnerGetDto deleteRunner(Long runnerId) {
         Optional<Runner> byId = runnerRepo.findById(runnerId);
         if (byId.isPresent()){
             runnerRepo.deleteById(runnerId);
-            return entityToDto(byId.get());
+            return entityToGetDto(byId.get());
         }else {
             return null;
         }
@@ -87,7 +91,12 @@ public class RunnerServiceImpl implements RunnerService {
         runner.setRunnerId(dto.getRunnerId());
         return runner;
     }
+
     private RunnerDto entityToDto(Runner runner){
         return(runner == null) ? null : modelMapper.map(runner, RunnerDto.class);
+    }
+
+    private RunnerGetDto entityToGetDto(Runner runner){
+        return(runner == null) ? null : modelMapper.map(runner, RunnerGetDto.class);
     }
 }

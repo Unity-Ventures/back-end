@@ -2,6 +2,7 @@ package lk.api.controller;
 
 import lk.api.dto.EmployeeDto;
 import lk.api.dto.RunnerDto;
+import lk.api.dto.getdto.RunnerGetDto;
 import lk.api.service.RunnerService;
 import lk.api.util.JWTTokenGenerator;
 import lk.api.util.TokenStatus;
@@ -39,7 +40,7 @@ public class RunnerController {
     @GetMapping
     public ResponseEntity<Object> getAllRunners(@RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            List<RunnerDto> allRunners = this.runnerService.getAllRunners();
+            List<RunnerGetDto> allRunners = this.runnerService.getAllRunners();
             return new ResponseEntity<>(allRunners, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
@@ -47,9 +48,9 @@ public class RunnerController {
     }
 
     @GetMapping("/{runnerId}")
-    public ResponseEntity<Object> getAllRunners(@PathVariable Long runnerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
+    public ResponseEntity<Object> searchRunners(@PathVariable Long runnerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            RunnerDto dto = this.runnerService.searchRunner(runnerId);
+            RunnerGetDto dto = this.runnerService.searchRunner(runnerId);
             if (dto == null) {
                 return new ResponseEntity<>("Empty Data", HttpStatus.BAD_REQUEST);
             } else {
@@ -63,7 +64,7 @@ public class RunnerController {
     @GetMapping("get_all_runner_employee_wise/{employeeId}")
     public ResponseEntity<Object> getAllRunnersEmployeeWise(@PathVariable Long employeeId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            List<RunnerDto> runnerList = this.runnerService.getAllRunnersEmployeeWise(employeeId);
+            List<RunnerGetDto> runnerList = this.runnerService.getAllRunnersEmployeeWise(employeeId);
             return new ResponseEntity<>(runnerList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
@@ -73,7 +74,7 @@ public class RunnerController {
     @PutMapping("/{runnerId}")
     public ResponseEntity<Object> updateStudent(@PathVariable Long runnerId, @RequestBody RunnerDto updateRunnerDto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            RunnerDto dto = this.runnerService.updateRunner(runnerId, updateRunnerDto);
+            RunnerGetDto dto = this.runnerService.updateRunner(runnerId, updateRunnerDto);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
@@ -83,7 +84,7 @@ public class RunnerController {
     @DeleteMapping("/{runnerId}")
     public ResponseEntity<Object> deleteStudent(@PathVariable Long runnerId, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            RunnerDto dto = this.runnerService.deleteRunner(runnerId);
+            RunnerGetDto dto = this.runnerService.deleteRunner(runnerId);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
