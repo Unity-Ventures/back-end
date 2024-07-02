@@ -117,6 +117,17 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
         }
     }
 
+    @Override
+    public List<PaymentDetailsGetDto> getPaymentDetailsRunnerWise(Long runnerId) {
+        List<PaymentDetails> allPaymentDetails = this.paymentDetailsRepo.findAllByRunner_RunnerId(runnerId);
+        List<PaymentDetailsGetDto> list = new ArrayList<>();
+        for (PaymentDetails paymentDetails : allPaymentDetails) {
+            PaymentDetailsGetDto dto = entityToGetDto(paymentDetails);
+            list.add(dto);
+        }
+        return list;
+    }
+
     private PaymentDetails dtoToEntity(PaymentDetailsDto dto) {
         PaymentDetails paymentDetails = modelMapper.map(dto, PaymentDetails.class);
         paymentDetails.setPaymentId(dto.getPaymentId());

@@ -28,7 +28,7 @@ public class ApiApplication {
     public void initUsers() {
         try {
             String encodePassword = passwordEncoder.encode("1234");
-            employeeRepo.save(new Employee(1L, "piyumal", "nipuna", "Galle", "0754585756", "199907502281", "Sri Lanka", "Admin", "piyumal", encodePassword));
+            employeeRepo.save(new Employee(1L, "Ravishanker", "Satgunapalan", "Rathmalana", "0774423800", "86777888v", "SriLanka", "Admin", "ravi",encodePassword));
 
         } catch (Exception e) {
             logger.error("An error occurred during user initialization.", e);

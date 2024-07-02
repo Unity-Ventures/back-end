@@ -24,4 +24,6 @@ public interface PaymentDetailsService {
     List<PaymentDetailsGetDto> searchPaymentDetailsOrderWise(Long orderId);
 
     PaymentDetailsGetDto saveBillImage(Long paymentId, MultipartFile imageDto) throws URISyntaxException, IOException;
+
+    List<PaymentDetailsGetDto> getPaymentDetailsRunnerWise(Long runnerId);
 }
