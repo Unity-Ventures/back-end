@@ -38,7 +38,6 @@ public class JWTTokenGenerator {
             .setId(String.valueOf(dto.getEmployeeId()))
             .setSubject(dto.getUserName())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(new Date().getTime()+jwtExpirationMs))
             .signWith(key(), SignatureAlgorithm.HS256)
             .compact();
     }
