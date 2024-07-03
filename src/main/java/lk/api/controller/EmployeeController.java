@@ -1,6 +1,7 @@
 package lk.api.controller;
 
 import lk.api.dto.EmployeeDto;
+import lk.api.dto.getdto.RunnerGetDto;
 import lk.api.service.EmployeeService;
 import lk.api.util.JWTTokenGenerator;
 import lk.api.util.TokenStatus;
@@ -17,7 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class EmployeeController {
-
     private final JWTTokenGenerator jwtTokenGenerator;
     private final EmployeeService employeeService;
 
@@ -42,7 +42,6 @@ public class EmployeeController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody EmployeeDto dto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-
             EmployeeDto isUser = this.employeeService.findUserByName(dto.getNic(), dto.getUserName());
             if (isUser == null) {
                 EmployeeDto employeeDto = this.employeeService.registerUser(dto);
@@ -56,10 +55,15 @@ public class EmployeeController {
     }
 
     @PostMapping("/get_user_info_by_token")
-    public ResponseEntity<Object> getUserInfoByToken(@RequestHeader(name = "Authorization") String authorizationHeader) {
+    public ResponseEntity<Object> getUserInfoByToken(@RequestBody String role, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            EmployeeDto employeeFromToken = this.jwtTokenGenerator.getEmployeeFromToken(authorizationHeader);
-            return new ResponseEntity<>(employeeFromToken, HttpStatus.CREATED);
+            if (role.equals("runner") || role.equals("Runner")){
+                RunnerGetDto runnerFromToken = this.jwtTokenGenerator.getRunnerFromToken(authorizationHeader);
+                return new ResponseEntity<>(runnerFromToken, HttpStatus.CREATED);
+            }else {
+                EmployeeDto employeeFromToken = this.jwtTokenGenerator.getEmployeeFromToken(authorizationHeader);
+                return new ResponseEntity<>(employeeFromToken, HttpStatus.CREATED);
+            }
         } else {
             return new ResponseEntity<>(TokenStatus.TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
         }
