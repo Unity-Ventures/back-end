@@ -81,6 +81,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             dto.setEmployeeId(byId.getEmployeeId());
             Employee employee = dtoToEntity(dto);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             Employee save = employeeRepo.save(employee);
             return entityToDto(save);
         }

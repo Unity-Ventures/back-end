@@ -68,6 +68,8 @@ public class RunnerServiceImpl implements RunnerService {
         if (byId.isPresent()){
             updateRunnerDto.setRunnerId(runnerId);
             Runner runner = this.dtoToEntity(updateRunnerDto);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            runner.setPassword(passwordEncoder.encode(updateRunnerDto.getPassword()));
             Runner save = runnerRepo.save(runner);
             return entityToGetDto(save);
         }else {
