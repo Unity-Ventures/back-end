@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lk.api.dto.EmployeeDto;
+import lk.api.dto.RunnerDto;
 import lk.api.dto.getdto.RunnerGetDto;
 import lk.api.service.EmployeeService;
 import lk.api.service.RunnerService;
@@ -36,6 +37,10 @@ public class JWTTokenGenerator {
 
     public String generateToken(EmployeeDto dto) {
         return Jwts.builder().setId(String.valueOf(dto.getEmployeeId())).setSubject(dto.getUserName()).setIssuedAt(new Date()).signWith(key(), SignatureAlgorithm.HS256).compact();
+    }
+
+    public String generateToken(RunnerDto dto) {
+        return Jwts.builder().setId(String.valueOf(dto.getRunnerId())).setSubject(dto.getUserName() ).setIssuedAt(new Date()).signWith(key(), SignatureAlgorithm.HS256).compact();
     }
 
     private Key key() {

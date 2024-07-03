@@ -1,6 +1,7 @@
 package lk.api.controller;
 
 import lk.api.dto.EmployeeDto;
+import lk.api.dto.RunnerDto;
 import lk.api.dto.getdto.RunnerGetDto;
 import lk.api.service.EmployeeService;
 import lk.api.util.JWTTokenGenerator;
@@ -28,14 +29,28 @@ public class EmployeeController {
 
     @PostMapping("/login")
     public Map<String, String> employeeLogin(@RequestBody EmployeeDto dto) {
-        EmployeeDto employeeDto = employeeService.employeeLogin(dto);
         Map<String, String> response = new HashMap<>();
-        if (employeeDto == null) {
-            response.put("massage", "wrong details");
-        } else {
-            String token = this.jwtTokenGenerator.generateToken(employeeDto);
-            response.put("token", token);
+
+        if (dto.getRole().equals("Runner") || dto.getRole().equals("runner")){
+            RunnerDto runnerDto = employeeService.runnerLogin(dto);
+            if (runnerDto == null) {
+                response.put("massage", "wrong details");
+            } else {
+                String token = this.jwtTokenGenerator.generateToken(runnerDto);
+                response.put("token", token);
+            }
+        }else {
+            EmployeeDto employeeDto = employeeService.employeeLogin(dto);
+            if (employeeDto == null) {
+                response.put("massage", "wrong details");
+            } else {
+                String token = this.jwtTokenGenerator.generateToken(employeeDto);
+                response.put("token", token);
+            }
         }
+
+
+
         return response;
     }
 
@@ -55,9 +70,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/get_user_info_by_token")
-    public ResponseEntity<Object> getUserInfoByToken(@RequestBody String role, @RequestHeader(name = "Authorization") String authorizationHeader) {
+    public ResponseEntity<Object> getUserInfoByToken(@RequestBody RunnerDto dto, @RequestHeader(name = "Authorization") String authorizationHeader) {
         if (this.jwtTokenGenerator.validateToken(authorizationHeader)) {
-            if (role.equals("runner") || role.equals("Runner")){
+            if (dto.getRole().equals("runner") || dto.getRole().equals("Runner")){
                 RunnerGetDto runnerFromToken = this.jwtTokenGenerator.getRunnerFromToken(authorizationHeader);
                 return new ResponseEntity<>(runnerFromToken, HttpStatus.CREATED);
             }else {

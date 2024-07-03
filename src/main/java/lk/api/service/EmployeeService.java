@@ -1,6 +1,7 @@
 package lk.api.service;
 
 import lk.api.dto.EmployeeDto;
+import lk.api.dto.RunnerDto;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface EmployeeService {
     List<EmployeeDto> getAllEmployee();
 
     List<EmployeeDto> getAllPartner();
+
+    RunnerDto runnerLogin(EmployeeDto dto);
 }
