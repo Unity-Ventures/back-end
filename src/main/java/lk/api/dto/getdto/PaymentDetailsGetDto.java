@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
@@ -18,4 +20,5 @@ public class PaymentDetailsGetDto {
     private OrderGetDto order;
     private double runnerAmount;
     private String image;
+    private Date completedDate;
 }

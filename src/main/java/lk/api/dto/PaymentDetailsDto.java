@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
@@ -17,4 +19,5 @@ public class PaymentDetailsDto {
     private Long orderId;
     private double runnerAmount;
     private MultipartFile image;
+    private Date completedDate;
 }
