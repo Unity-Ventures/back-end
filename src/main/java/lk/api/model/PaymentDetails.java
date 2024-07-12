@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.lang.Nullable;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @ToString
 @NoArgsConstructor
@@ -19,6 +21,7 @@ public class PaymentDetails {
     private double runnerAmount;
     @Nullable
     private String image;
+    private Date completedDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "employee_id")
